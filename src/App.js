@@ -1,58 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import React, { useEffect } from 'react';
+import { Col, Container, Row } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
-  );
-}
+import ImageCard from './components/ImageCard';
+import Loader from './components/Loader';
+import SearchBar from './components/SearchBar';
+import SideMenu from './components/SideMenu';
+import { fetchApiData } from './app/reducer';
+
+const App = () => {
+	// destructure from root state
+	const { loading, search, categories, opacity, activeData } = useSelector(
+		(state) => state.rootState,
+	);
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(fetchApiData());
+	}, []);
+
+	return (
+		<Container fluid>
+			{loading ? (
+				<Loader />
+			) : (
+				<>
+					<Row>
+						<Col className="p-3 border border-dark">
+							<SearchBar search={search} />
+						</Col>
+					</Row>
+					<Row className="vh-100">
+						<Col xs={4} className="border border-top-0 border-dark">
+							<SideMenu categories={categories} opacity={opacity} />
+						</Col>
+						<Col>
+							<ImageCard data={activeData} search={search} />
+						</Col>
+					</Row>
+				</>
+			)}
+		</Container>
+	);
+};
 
 export default App;
