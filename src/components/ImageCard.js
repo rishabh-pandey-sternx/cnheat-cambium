@@ -1,12 +1,12 @@
 import React from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
-import { map } from 'lodash';
+import { map,isEmpty } from 'lodash';
 import { useSelector } from 'react-redux';
 
 
 const List = ({ data }) => {
 	return (
-		<>
+		<>	{isEmpty(data) && <p>No items to show</p>}
 			{map(data, ({ image, text }, idx) => (
 				<ListItem key={idx} image={image} text={text} index={idx} />
 			))}
@@ -19,7 +19,11 @@ const ListItem = ({ image, text, index }) => {
 	return (
 		<Col key={index}>
 			<Card>
-				<Card.Img variant="top" src={image} style={{ opacity: opacity, width:'30%' }} />
+			<Card.Img
+					variant="top"
+					src={image}
+					style={{ opacity: opacity, objectFit: 'cover' }}
+				/>
 				<Card.Body>
 					<Card.Text>{text}</Card.Text>
 				</Card.Body>

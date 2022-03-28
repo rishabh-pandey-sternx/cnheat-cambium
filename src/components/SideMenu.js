@@ -6,13 +6,13 @@ import { isEmpty } from 'lodash';
 
 import { setActiveData, setActiveTab, setOpacity } from '../app/reducer';
 
-const SideMenu = ({ categories, opacity }) => {
+const SideMenu = ({ categories, opacity,currentTab }) => {
 	const dispatch = useDispatch();
 	return (
 		<>
 			<ListGroup variant="flush">
 				{!isEmpty(categories) &&
-					categories?.map((c, idx) => (
+					categories?.map((c, idx,arr) => (
 						<ListGroup.Item
 							action
 							onClick={() => {
@@ -20,6 +20,7 @@ const SideMenu = ({ categories, opacity }) => {
 								dispatch(setActiveData(c));
 							}}
 							key={idx}
+							active={currentTab === arr[idx] ? true : false}
 						>
 							{c}
 						</ListGroup.Item>
